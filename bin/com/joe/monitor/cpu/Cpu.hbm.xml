@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.joe.monitor.cpu.CpuUnit" table="cpuunit">
+		<id name="id" column="id" type="long">
+			<generator class="increment" />
+		</id>
+
+		<property name="cpuId" column="cpu_id"></property>
+		<property name="user" column="user" />
+		<property name="sys" column="sys" />
+		<property name="nice" column="nice" />
+		<property name="idle" column="idle" />
+		<property name="wait" column="wait" />
+		<property name="irq" column="irq" />
+		<property name="softIrq" column="softIrq" />
+		<property name="stolen" column="stolen" />
+		<property name="combined" column="combined" />
+		<property name="desc" column="DESCRIPTION" />
+		<property name="day" column="day" />
+		<property name="hour" column="hour" />
+		<property name="minute" column="minute" />
+		<property name="timeStamp" column="timestamp" />
+		<property name ="ip" column ="ip"/>
+
+	</class>
+</hibernate-mapping>

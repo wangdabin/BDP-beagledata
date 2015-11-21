@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<service name="zookeeper" version="cdh5.3.0">
+	
+		<!-- 定义一些目录 -->
+		<dirs>
+			<dir name="install">/opt</dir>
+			<dir name="conf">conf</dir>
+		</dirs>
+		
+		<!-- 安装 -->
+		<install>
+			<!-- 安装步骤 -->
+			<steps>
+				<step name="step1" id="">
+					<configs>
+						<config name="basic">
+							<props>
+								<prop key="installDir" name="安装目录">
+									<value>2000</value>
+									<description>The number of milliseconds of each tick</description>
+								</prop>
+							</props>
+						</config>
+					</configs>
+				</step>
+			</steps>
+		</install>
+
+		
+		<!-- 一些命令的定义 -->
+		<commands>
+			<command name="start" shell="bin/zkServer.sh">
+				<param>start</param>
+			</command>
+			<command name="stop" shell="bin/zkServer.sh">
+				<param>stop</param>
+			</command>
+		</commands>
+		
+		<!-- 定义依赖的服务 -->
+		<depends></depends>
+		
+		<!-- 定义模式 -->
+		<models></models>
+		
+		<!-- 定义子服务 -->
+		<children></children>
+		
+		<!-- 环境变量的定义 -->
+		<environments>
+		</environments>
+		
+		<!-- 定义配置项 -->
+		<configs>
+			<!-- 定义基本的配置项 plugin plugin ID  extension 配置的真正实现类 可以为空 插入点是 com.joe.config.plugin.Config -->
+			<config name="basic" dir="conf" file="zoo.cfg" plugin="configs" extension="PropertiesConfig">
+				<props>
+					<prop key="tickTime" name="心跳间隔">
+						<value>2000</value>
+						<description>The number of milliseconds of each tick</description>
+					</prop>
+					<prop key="initLimit" name="初始化限制">
+						<value>10</value>
+						<description>The number of ticks that the initial synchronization phase can take</description>
+					</prop>
+					<prop key="syncLimit" name="同步限制">
+						<value>5</value>
+						<description> The number of ticks that can pass between sending a request and getting an acknowledgement</description>
+					</prop>
+					<prop key="dataDir" name="数据存储目录">
+						<value>/tmp/zookeeper</value>
+						<description>The directory where the snapshot is stored. do not use /tmp for storage, /tmp here is just example sakes.</description>
+					</prop>
+					<prop key="maxClientCnxns" name="客户最大连接数">
+						<value>100</value>
+						<description>客户最大连接数</description>
+					</prop>
+					<prop key="clientPort" name="客户访问端口">
+						<value>2181</value>
+						<description>The port at which the clients will connect</description>
+					</prop>
+				</props>
+			</config>
+			
+			<!-- 定义基本高级配置 -->
+			<config name="advanced" dir="conf" file="zoo.cfg" plugin="configs" extension="PropertiesConfig">
+				<props>
+					<prop key="autopurge.snapRetainCount" name="快照数">
+						<value>3</value>
+						<description>The number of snapshots to retain in dataDir</description>
+					</prop>
+					<prop key="autopurge.purgeInterval" name="清除任务间隔">
+						<value>0</value>
+						<description>Purge task interval in hours , Set to "0" to disable auto purge feature</description>
+					</prop>
+				</props>
+			</config>
+		</configs>
+	</service>
+</services>

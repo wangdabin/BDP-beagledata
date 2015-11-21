@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+   <name>mapreduce.framework.name</name>
+   <value>yarn</value>
+  </property>
+
+  <property>
+     <name>io.sort.mb</name>
+     <value>10</value>
+  </property>
+
+  <property>
+     <name>mapreduce.task.io.sort.mb</name>
+     <value>100</value>
+     <description>任务内部排序缓冲区大小默认100m</description>
+  </property>
+  
+  <property>
+     <name>mapreduce.map.sort.spill.percent</name>
+     <value>0.8</value>
+     <description>Map阶段溢写文件的阈值（排序缓冲区大小的百分比）默认0.8</description>
+  </property>
+
+  <property>
+     <name>mapreduce.reduce.shuffle.parallelcopies</name>
+     <value>5</value>
+     <description>Reduce Task启动的并发拷贝数据的线程数目默认5</description>
+  </property>
+
+  <property>
+     <name>mapreduce.map.memory.mb</name>
+     <value>2048</value>
+     <description>每个Map Task需要的内存量默认1024m</description>
+  </property>
+
+  <property>
+     <name>mapreduce.map.java.opts</name>
+     <value>-Xmx2048M</value>
+     <description>map的最大累计内存如：-Xmx1024M</description>
+  </property>
+
+  <property>
+     <name>mapreduce.reduce.memory.mb</name>
+     <value>1024</value>
+     <description>每个Reduce Task需要的内存量默认1024m</description>
+  </property>
+
+  <property>
+     <name>mapreduce.reduce.java.opts</name>
+     <value>-Xmx1024M</value>
+     <description>所有reduce加起来的总和内存大小如：-Xmx1024M</description>
+  </property>
+
+  <property>
+     <name>mapreduce.job.jvm.num.tasks</name>
+     <value>1</value>
+     <description>默认为1，设置为 -1，重用jvm</description>
+  </property> 
+
+  <property>
+     <name>mapreduce.job.reduce.slowstart.completedmaps</name>
+     <value>0.05</value>
+     <description>默认值是0.05,也就是map task完成数目达到5%时,开始启动reduce task</description>
+  </property>
+
+<!-- configure historyserver -->
+  <property>
+      <name>mapreduce.jobhistory.address</name>
+      <value>master:10020</value>
+  </property>
+  <property>
+      <name>mapreduce.jobhistory.webapp.address</name>
+      <value>master:19888</value>
+  </property>
+  <property>
+      <name>yarn.app.mapreduce.am.staging-dir</name>
+      <value>/data/user/hadoop/logs</value>
+   </property>
+</configuration>
+

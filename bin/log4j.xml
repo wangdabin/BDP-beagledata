@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/' > 
+  
+  <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%t] %c{3\}:%L - %m%n" />
+    </layout>
+  </appender>
+
+  <appender name="HIBERNATE" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/hibernate.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="SPRING" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/spring.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="SERVER" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/jetty.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="CORE" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/core.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+ <appender name="USER" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/user.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="AGENT" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/agent.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <appender name="SERVICE" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="File" value="./logs/service.log" />
+    <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+    <param name="Append" value="true" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss\} %-5p] [%c:%L] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <category name="org.springframework" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="SPRING" />
+    <appender-ref ref="STDOUT" />
+  </category>
+
+  <category name="org.hibernate" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="HIBERNATE" />
+  </category>
+  
+  <category name="com.sky" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="SERVER" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+  <category name="com.joe.core" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="CORE" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+  <category name="com.joe.user" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="USER" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+   <category name="com.joe.agent" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="AGENT" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+  <category name="com.joe.service" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="SERVICE" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+  <category name="com" additivity="false">
+    <priority value="debug" />
+    <appender-ref ref="SERVICE" />
+    <appender-ref ref="STDOUT" />
+  </category>
+  
+  <root>
+    <level value="ERROR" />
+    <appender-ref ref="STDOUT" />
+  </root>
+</log4j:configuration>

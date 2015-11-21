@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configs>
+	<config name="basic">
+		<props>
+			<prop key="installDir" name="安装目录" type="text">
+				<value>/opt</value>
+				<description>服务的安装目录</description>
+			</prop>
+			<prop key="username" name="服务用户">
+				<value>hadoop</value>
+				<description>运行服务的用户</description>
+			</prop>
+			<prop key="password" name="用户密码"  type="password">
+				<value></value>
+				<description>用户密码</description>
+			</prop>
+		</props>
+	</config>
+</configs>

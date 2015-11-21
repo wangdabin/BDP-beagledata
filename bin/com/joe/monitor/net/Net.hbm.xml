@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.joe.monitor.net.NetInfo" table="NETINFO">
+		<composite-id>
+			<key-property name="name" column="name"/>
+            <key-property name="ip" column="ip"/>
+		</composite-id>
+		<property name="enble" column="enble" />
+		<property name="timeStamp" column="timestamp" />
+	</class>
+	
+	<class name="com.joe.monitor.net.NetInterfaceUnit" table="netunit">
+		<id name="id" column="net_id" type="long">
+			<generator class="increment" />
+		</id>
+
+		<property name="rxBytes" column="rxBytes" />
+		<property name="txBytes" column="txBytes" />
+		<property name="speed" column="speed" />
+		<property name="day" column="day" />
+		<property name="hour" column="hour" />
+		<property name="minute" column="minute" />
+		<property name="timeStamp" column="timestamp" index="netunit_index_timeStamp"/>
+ 		<many-to-one name="netInfo" cascade="all" update="true" insert="true" lazy="false">
+			<column name="info_name"></column>
+			<column name="info_ip"></column>
+ 		</many-to-one>
+	</class>
+</hibernate-mapping>

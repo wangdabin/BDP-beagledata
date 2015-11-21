@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 安装的所有的步骤 -->
+<steps id="hadoop" service="hadoop">
+	<step id="--STEP_START--" name="基本配置" service="hadoop" type="basic" ok="hdfs_config">
+		<!-- <import file=""/> -->
+	</step>
+	
+	<!-- HDFS安装组 -->
+	<group id="HDFS" name="HDFS安装" service="hdfs">
+		<step id="hdfs_config" name="Namenode基本配置项" service="hdfs" type="config" ok="nn_host" parent="hadoop"/>
+		<group id="namenode" service="namenode">
+			<step id="nn_host" name="Namenode主机选择" service="namenode" type="host" ok="dn_host" parent="hdfs"/>
+			<!-- <step id="nn_environment" name="Namenode环境变量配置" service="namenode" type="environment" ok="nn_host"/>
+			<step id="nn_host" name="Namenode基本配置项" service="namenode" type="config" ok="dn_host"/> -->
+		</group>
+		<group id="datanode" service="datanode">
+			<step id="dn_host" name="datanode主机选择" service="datanode" type="host" ok="jn_host" parent="hdfs"/>
+		</group>
+		<group id="journalnode" service="journalnode">
+			<step id="jn_host" name="Journalnode主机选择" service="journalnode" type="host" ok="zkfc_host" parent="hdfs"/>
+		</group>
+		<group id="zkfc" service="zkfc">
+			<step id="zkfc_host" name="ZKFC主机选择" type="host" service="zkfc"  ok="MR" parent="hdfs"/>
+		</group>
+	</group>
+	
+	<step id="MR" name="选择模式" type="select" key="mr.model.select">
+		<option name="MRV1" value="MRV1" ok="mrv1_config"/>
+		<option name="YARN" value="YARN" ok="yarn_config"/>
+	</step>
+	
+	<!-- MRV1安装组 -->
+	<group id="MRV1">
+		<step id="mrv1_config" name="Mrv1基本配置项" service="mrv1" type="config" ok="jt_host" parent="hadoop"/>
+		<group id="jobtracker" service="jobtracker">
+			<step id="jt_host" name="Jobtracker主机选择" service="jobtracker" type="host" ok="tt_host" parent="mrv1"/>
+		</group>
+		<group id="tasktracker" service="tasktracker">
+			<step id="tt_host" name="Tasktracker主机选择" service="tasktracker" type="host" ok="--STEP_END--" parent="mrv1"/>
+		</group>
+	</group>
+	
+	<!-- YARN安装组 -->
+	<group id="YARN">
+		<step id="yarn_config" name="Yarn基本配置项" service="yarn" type="config" ok="rm_host" parent="hadoop"/>
+		<group id="resourcemanager" service="resourcemanager">
+			<step id="rm_host" name="Resourcemanager主机选择" service="resourcemanager" type="host" ok="nm_host" parent="yarn"/>
+		</group>
+		<group id="nodemanager" service="nodemanager">
+			<step id="nm_host" name="Nodemanager主机选择" service="nodemanager" type="host" ok="--STEP_END--" parent="yarn"/>
+		</group>
+	</group>
+</steps>

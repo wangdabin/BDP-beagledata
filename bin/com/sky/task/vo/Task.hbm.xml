@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.sky.task.vo.Task" table="agent_task">
+		<id name="id" column="taskId">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" />
+		<property name="status" column="status" />
+		<property name="cTime" column="ctime" />
+		<property name="fTime" column="ftime" />
+		<property name="message" column="description" />
+		<property name="type" column="type" />
+		<property name="hostname" column="hostname" />
+		<set name="orders" cascade="all" lazy="false" inverse="true">
+			<key column="task_id" />
+			<one-to-many class="com.sky.task.vo.TranOrder"/>
+		</set>  
+	</class>
+	
+	<class name="com.sky.task.vo.TranOrder" table="agent_order">
+		<id name="id" column="orderId">
+			<generator class="native" />
+		</id>
+		<property name="command" column="command" />
+		<property name="params" column="params" />
+		<property name="src" column="src" />
+		<property name="dest" column="dest" />
+		<property name="serviceName" column="serviceName" />
+		<property name="version" column="version" />
+		<property name="success" column="success" />
+		<property name="tid" column="tid" />
+		<property name="order" column="orderNum" not-null="true" />
+		<property name="message" column="description" />
+		<property name="destHost" column="destHost" />
+		<property name="completion" column="completion" not-null="true" />
+	</class>
+</hibernate-mapping>

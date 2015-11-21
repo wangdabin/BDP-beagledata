@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="mrv1" version="cdh5.3.0">
+
+	<!-- 定义一些目录 -->
+	<dirs>
+		<dir name="conf">etc/hadoop</dir>
+	</dirs>
+	
+	<!-- 一些命令的定义 -->
+	<commands>
+		<command name="start" shell="bin-mapreduce1/start-mapred.sh"/>
+		<command name="stop" shell=" bin-mapreduce1/stop-mapred.sh"/>
+	</commands>
+	
+	<!-- 定义子服务 -->
+	<children>
+		<import file="/conf/mrv1/service-jobtracker.xml"/>
+		<import file="/conf/mrv1/service-tasktracker.xml"/>
+	</children>
+	
+	<!-- 环境变量的定义 -->
+	<environments>
+	</environments>
+	
+	<!-- 定义配置项 -->
+	<configs>
+		<!-- 定义基本的配置项 plugin plugin ID  extension 配置的真正实现类 可以为空 插入点是 com.joe.config.plugin.Config -->
+		<config name="basic" dir="etc/hadoop" file="mapred-site.xml" plugin="configs" extension="HadoopConfig">
+			<import file="/conf/mrv1/template/mapred-site.xml"/>
+		</config>
+	</configs>
+</service>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+	default-lazy-init="false">
+	<!-- 自动搜索@Controller标注的类 -->
+	<context:component-scan base-package="com.joe.*,com.sky.*" />
+
+	<!-- 引入properties文件 -->
+	<context:property-placeholder location="classpath:/config.properties" />
+	<!-- 定义数据库连接池数据源bean destroy-method="close"的作用是当数据库连接不使用的时候,就把该连接重新放到数据池中,方便下次使用调用 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" lazy-init="true">
+		<!-- 设置JDBC驱动名称 -->
+		<property name="driverClass" value="${jdbc.driver}" />
+		<!-- 设置JDBC连接URL -->
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<!-- 设置数据库用户名 -->
+		<property name="user" value="${jdbc.username}" />
+		<!-- 设置数据库密码 -->
+		<property name="password" value="${jdbc.password}" />
+		<!-- 设置连接池初始值 -->
+		<property name="initialPoolSize" value="${jdbc.poolsize}" />
+	</bean>
+
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:com/joe/monitor/cpu/Cpu.hbm.xml</value>
+				<value>classpath:com/joe/host/vo/Host.hbm.xml</value>
+				<value>classpath:com/joe/user/vo/User.hbm.xml</value>
+				<value>classpath:com/joe/monitor/memory/Memory.hbm.xml</value>
+				<value>classpath:com/joe/monitor/net/Net.hbm.xml</value>
+				<value>classpath:com/joe/monitor/filesystem/Disk.hbm.xml</value>
+				<value>classpath:com/joe/agent/vo/Agent.hbm.xml</value>
+				<value>classpath:com/sky/service/vo/Service.hbm.xml</value>
+				<value>classpath:com/sky/task/vo/Task.hbm.xml</value>
+				<value>classpath:com/joe/system/vo/SysDictionary.hbm.xml</value>
+				<value>classpath:com/sky/config/ConfigVO.hbm.xml</value>
+				<value>classpath:com/joe/monitor/vo/BDPMessage.hbm.xml</value>
+		         <value>classpath:com/sky/app/vo/*.hbm.xml</value>
+			</list>
+		</property>
+		<!-- hibernate的相关属性配置 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 设置数据库方言 -->
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<!-- 设置自动创建|更新|验证数据库表结构 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<!-- 是否在控制台显示sql -->
+				<prop key="hibernate.show_sql">true</prop>
+				<!-- 是否格式化sql，优化显示 -->
+				<prop key="hibernate.format_sql">true</prop>
+				<!-- 是否开启二级缓存 -->
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<!-- 是否开启查询缓存 -->
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<!-- 数据库批量查询最大数 <prop key="hibernate.jdbc.fetch_size">500</prop> -->
+				<!-- 数据库批量更新、添加、删除操作最大数 <prop key="hibernate.jdbc.batch_size">100</prop> -->
+				<!-- 是否自动提交事务 -->
+				<prop key="hibernate.connection.autocommit">true</prop>
+				<!-- 指定hibernate在何时释放JDBC连接 -->
+				<prop key="hibernate.connection.release_mode">on_close</prop>
+				<!-- 创建session方式 hibernate3.x 的方式 -->
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext
+				</prop>
+				<!-- javax.persistence.validation.mode默认情况下是auto的，就是说如果不设置的话它是会自动去你的classpath下面找一个bean-validation**包 
+					所以把它设置为none即可 -->
+				<prop key="javax.persistence.validation.mode">none</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 事务管理器配置, Hibernate单数据源事务 -->
+	<bean id="defaultTransactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		lazy-init="true">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="defaultTransactionManager"
+		proxy-target-class="true" />
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"></bean>
+	<bean
+		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+</beans>

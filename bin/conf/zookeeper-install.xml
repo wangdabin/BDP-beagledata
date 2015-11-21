@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 安装的所有的步骤 -->
+<steps id="zookeeper" service="zookeeper">
+	<step id="--STEP_START--" name="基本配置" type="basic" service="zookeeper" ok="zk_host">
+		<!-- <import file=""/> -->
+	</step>
+	
+	<step id="zk_host" name="Zookeeper主机选择" type="host" service="zookeeper" ok="zk_config"/>
+	<!-- <step id="nn_environment" name="Namenode环境变量配置" type="environment" ok="nn_host"/> -->
+	<step id="zk_config" name="Namenode基本配置项" type="config" service="zookeeper" ok="--STEP_END--"/>
+</steps>

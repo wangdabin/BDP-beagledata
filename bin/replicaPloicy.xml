@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rackRelicationInfo>
+    <replicaPolicys>
+        <name>1</name>
+        <loc>/rack1</loc>
+    </replicaPolicys>
+    <replicaPolicys>
+        <name>2</name>
+        <loc>/rack2</loc>
+    </replicaPolicys>
+</rackRelicationInfo>

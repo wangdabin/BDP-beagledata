@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rackInfo>
+    <racks>
+        <name>rack1</name>
+        <nodes>
+            <name>master</name>
+        </nodes>
+        <nodes>
+            <name>master1</name>
+        </nodes>
+        <nodes>
+            <name>node1</name>
+        </nodes>
+    </racks>
+</rackInfo>

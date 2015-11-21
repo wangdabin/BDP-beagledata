@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+	<service name="hadoop" version="cdh5.3.0">
+	
+		<!-- 定义一些目录 -->
+		<dirs>
+			<dir name="install">/opt</dir>
+			<dir name="conf">etc/hadoop</dir>
+		</dirs>
+		
+		<!-- 一些命令的定义 -->
+		<commands>
+			<command name="start" shell="sbin/startAll.sh"/>
+			<command name="stop" shell="sbin/stopAll.sh"/>
+		</commands>
+		
+		<!-- 定义依赖的服务 -->
+		<depends>zookeeper</depends>
+		
+		<!-- 定义模式 -->
+		<models></models>
+		
+		<!-- 定义子服务 -->
+		<children>
+			<import file="/conf/hdfs/service-hdfs.xml"/>
+			<import file="/conf/mrv1/service-mrv1.xml"/>
+			<import file="/conf/yarn/service-yarn.xml"/>
+		</children>
+		
+		<!-- 环境变量的定义 -->
+		<environments>
+			<config name="basic" dir="etc/hadoop" file="hadoop-env.sh" plugin="configs" extension="EnvironmentConfig">
+				<import file="/conf/template/hadoop-env.sh"/>
+			</config>
+		</environments>
+		
+		<!-- 定义配置项 -->
+		<configs>
+			<config name="basic" dir="etc/hadoop" file="hadoop-env.sh" plugin="configs" extension="HadoopConfig">
+				<import file="/conf/template/core-site.xml"/>
+			</config>
+		</configs>
+	</service>
+</services>

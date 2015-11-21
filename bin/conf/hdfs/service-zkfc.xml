@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service name="zkfc" version="cdh5.3.0">
+
+	<!-- 定义一些目录 -->
+	<dirs>
+		<dir name="conf">etc/hadoop</dir>
+	</dirs>
+	
+	<!-- 一些命令的定义 -->
+	<commands>
+		<command name="start" shell="sbin/hadoop-daemon.sh">
+			<param>start</param>
+			<param>zkfc</param>
+		</command>
+		<command name="stop" shell="sbin/hadoop-daemon.sh">
+			<param>stop</param>
+			<param>zkfc</param>
+		</command>
+		
+		<!-- 格式化zkfc -->
+		<command name="formatZK" shell="bin/hdfs">
+			<param>zkfc</param>
+			<param>-formatZK</param>
+		</command>
+	</commands>
+	
+	<!-- 环境变量的定义 -->
+	<environments>
+	</environments>
+	
+	<!-- 定义配置项 -->
+	<configs>
+		<!-- 定义基本的配置项 plugin plugin ID  extension 配置的真正实现类 可以为空 插入点是 com.joe.config.plugin.Config
+		<config name="basic" dir="conf" file="zoo.cfg" plugin="configs" extension="HadoopConfig">
+		</config>
+		 -->
+	</configs>
+</service>

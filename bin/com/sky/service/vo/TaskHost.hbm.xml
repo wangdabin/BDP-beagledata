@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.sky.service.vo.TaskHost" table="task_host">
+		<id name="id" column="thId">
+			<generator class="native" />
+		</id>
+		<property name="hostName" column="hostname" />
+		<property name="hostIp" column="hostip" />
+		<property name="status" column="status" />
+		<many-to-one name="task" column="taskId" lazy="false" cascade="all"></many-to-one>
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://project.hasor.net/hasor/schema/main">
+    <hasor.loadPackages>com.joe.*,com.jone.*,com.sky.*</hasor.loadPackages>
+	<hasor.modules.loadModule>true</hasor.modules.loadModule>
+	<hasor.registerFactory.default>guice</hasor.registerFactory.default>
+	<hasor.registerFactory>
+		<creater name="guice" class="net.hasor.core.context.factorys.guice.GuiceRegisterFactoryCreater"></creater>
+		<creater name="hasor" class="net.hasor.core.context.factorys.hasor.HasorRegisterFactoryCreater"></creater>
+		<creater name="default" class="net.hasor.core.context.factorys.DefaultRegisterFactoryCreater"></creater>
+	</hasor.registerFactory>
+</config>

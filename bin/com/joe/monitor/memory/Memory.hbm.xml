@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.joe.monitor.memory.MemoryUnit" table="memoryunit">
+		<id name="id" column="memory_id">
+			<generator class="increment" />
+		</id>
+
+		<property name="name" column="name" />
+		<property name="total" column="total" />
+		<property name="ram" column="ram" />
+		<property name="used" column="used" />
+		<property name="free" column="free" />
+		<property name="actualUsed" column="actualUsed" />
+		<property name="actualFree" column="actualFree" />
+		<property name="usedPercent" column="usedPercent" />
+		<property name="freePercent" column="freePercent" />
+		<property name="ip" column="ip" />
+		<property name="day" column="day" />
+		<property name="hour" column="hour" />
+		<property name="minute" column="minute" />
+		<property name="timeStamp" column="timestamp" />
+	</class>
+</hibernate-mapping>

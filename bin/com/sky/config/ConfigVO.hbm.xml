@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.sky.config.ConfigVO" table="CONFIG">
+		<composite-id>
+			<key-property name="name" column="NAME" />
+			<key-property name="version" column="VERSION" />
+			<key-property name="key" column="CONFIG_KEY" />
+		</composite-id>
+		<property name="value" column="VALUE" />
+		<property name="defValue" column="DEFVALUE" />
+		<property name="description" column="DESCRIPTION" />
+		<property name="file" column="FILE" index="CONFIG_INDEX_FILE" />
+		<property name="type" column="TYPE" index="CONFIG_INDEX_TYPE" />
+		<property name="favorite" column="FAVORITE" index="CONFIG_INDEX_FAVORITE" />
+		<property name="createTime" column="CREATETIME" />
+		<property name="updateTime" column="UPDATETIME" />
+	</class>
+
+	<class name="com.sky.config.BDPConfigVO" table="bdp_config">
+		<id name="key" column="key1">
+			<generator class="assigned"></generator>
+		</id>
+		<property name="name" column="name1" />
+		<property name="value" column="value1" />
+		<property name="description" column="description1" />
+		<property name="editable" type="boolean" column="editable1" />
+		<property name="visible" type="boolean" column="visible1" />
+	</class>
+
+
+</hibernate-mapping>
