@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.joe.agent.vo.Agent" table="agent">
+		<id name="id" column="agentId">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" />
+		<property name="version" column="version" />
+		<property name="desc" column="description" />
+		<property name="ip" column="ip" unique="true" />
+		<property name="installProgress" column="installProgress" />
+		<property name="runStatus" column="runStatus" />
+		<property name="startTime" column="startTime" type="long" />
+	</class>
+	<class name="com.joe.agent.vo.LogFile" table="agent_log">
+		<id name="id" column="logId">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" />
+		<property name="fileName" column="fileName" />
+		<property name="url" column="url" />
+	</class>
+	
+</hibernate-mapping>

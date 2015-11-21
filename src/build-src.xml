@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<project>
+
+	<property name="name" value="${ant.project.name}"/>
+	<property name="root" value="${basedir}"/>
+
+	<!-- load plugin-specific properties first -->
+	<property file="${user.home}/${name}.build.properties" />
+	
+
+	<property name="bdp.root" location="${root}/../../"/>
+	<property file="${bdp.root}/default.properties" />
+
+	<property name="bdp.src.dir" location="${bdp.root}/src/"/>
+	<property name="bdp.lib.dir" location="${bdp.root}/lib/"/>
+	
+	<path id="source_package">
+		<dirset dir="${bdp.src.dir}">
+			<include name="*" />
+		</dirset>
+	</path>
+	
+	<property name="src.test" location="${root}/src/test" />
+
+	<available file="${src.test}" type="dir" property="test.available"/>
+
+	<property name="conf.dir" location="${bdp.root}/conf"/>
+
+	<property name="core.src.dir" location="${root}/"/>
+	<property name="core.build.dir" location="${bdp.root}/build/core/${name}"/>
+	<property name="core.build.classes" location="${core.build.dir}/classes"/>
+		
+	<property name="core.build.test" location="${core.build.dir}/test"/>
+
+	<property name="deploy.dir" location="${bdp.root}/build/deploy/core/"/>
+
+	<path id="plugin.deps"/>
+	
+	<fileset id="lib.jars" dir="${root}" includes="lib/*.jar" />
+
+	<!-- 基本的classpath -->
+	<path id="classpath">
+		<pathelement location="${core.build.classes}" />
+		<fileset dir="${bdp.lib.dir}">
+			<include name="*/*.jar" />
+		</fileset>
+		<fileset refid="lib.jars" />
+		<pathelement location="${bdp.root}/build/classes" />
+		<fileset dir="${bdp.root}/build/">
+			<include name="*/*.jar" />
+		</fileset>
+		<path refid="plugin.deps" />
+		<fileset dir="${deploy.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<!-- the unit test classpath -->
+	<path id="test.classpath">
+		<pathelement location="${core.build.test}" />
+		<pathelement location="${bdp.root}/build/test/classes"/>
+		<pathelement location="${bdp.root}/src/test"/>
+		<pathelement location="${conf.dir}"/>
+		<pathelement location="${bdp.root}/build"/>
+		<path refid="classpath"/>
+	</path>
+
+	<!-- ====================================================== -->
+	<!-- Stuff needed by all targets                            -->
+	<!-- ====================================================== -->
+	<target name="init">
+		<mkdir dir="${core.build.dir}"/>
+		<mkdir dir="${core.build.classes}"/>
+		<mkdir dir="${core.build.test}"/>
+		<mkdir dir="${deploy.dir}"/>
+
+		<antcall target="init-plugin"/>
+	</target>
+
+	<!-- to be overridden by sub-projects -->
+	<target name="init-plugin"/>
+
+	<!--
+   ! Used to build plugin compilation dependencies
+   ! (to be overridden by plugins)
+   !-->
+	<target name="deps-jar"/>
+
+	<!--
+   ! Used to deploy plugin runtime dependencies
+   ! (to be overridden by plugins)
+   !-->
+	<target name="deps-test"/>
+
+	<!-- ====================================================== -->
+	<!-- Compile the Java files                                 -->
+	<!-- ====================================================== -->
+	<target name="compile" depends="init,deps-jar">
+		<echo message="Compiling core: ${name}"/>
+		<javac encoding="${compiler.encoding}" srcdir="${core.src.dir}" includes="**/*.java" 
+				destdir="${core.build.classes}" debug="${compiler.debug}" optimize="${compiler.optimize}" 
+				deprecation="${compiler.deprecation}" verbose="${compiler.verbose}" compiler="${compiler}" 
+				source="${compiler.source}" target="${compiler.target}" includeantruntime="${compiler.includeantruntime}" sourcepathref="source_package">
+				<compilerarg value="-Xlint"/>
+				<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="compile-core">
+		<ant target="compile-core" inheritall="false" dir="${bdp.root}"/>
+		<ant target="compile"/>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Make plugin .jar                                                   -->
+	<!-- ================================================================== -->
+	<!--                                                                    -->
+	<!-- ================================================================== -->
+	<target name="jar" depends="compile">
+		<jar
+	      jarfile="${core.build.dir}/${prefix_name}${name}-${version}.jar"
+	      basedir="${core.build.classes}"
+	    />
+	</target>
+
+	<target name="jar-core" depends="compile-core">
+		<jar
+        jarfile="${core.build.dir}/${prefix_name}${name}-${version}.jar"
+        basedir="${core.build.classes}"
+        />
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Deploy core to ${deploy.dir}                                     -->
+	<!-- ================================================================== -->
+	<!--                                                                    -->
+	<!-- ================================================================== -->
+	<target name="deploy" depends="jar, deps-test">
+		<mkdir dir="${deploy.dir}"/>
+		<available property="lib-available" file="${core.build.dir}/${prefix_name}${name}-${version}.jar"/>
+		<antcall target="copy-generated-lib"/>
+		<copy todir="${deploy.dir}" flatten="true">
+			<fileset refid="lib.jars"/>
+		</copy>
+	</target>
+
+	<target name="copy-generated-lib" if="lib-available">
+		<copy file="${core.build.dir}/${prefix_name}${name}-${version}.jar" todir="${deploy.dir}" failonerror="false"/>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Compile test code                                                  -->
+	<!-- ================================================================== -->
+	<target name="compile-test" depends="compile" if="test.available">
+		<javac 
+     encoding="${build.encoding}" 
+     srcdir="${src.test}"
+     includes="**/*.java"
+     destdir="${core.build.test}"
+     debug="${javac.debug}"
+     optimize="${javac.optimize}"
+     target="${javac.version}"
+     source="${javac.version}"
+     deprecation="${javac.deprecation}">
+			<classpath refid="test.classpath"/>
+		</javac>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Run unit tests                                                     -->
+	<!-- ================================================================== -->
+	<target name="test" depends="compile-test, deploy" if="test.available">
+		<echo message="Testing plugin: ${name}"/>
+
+		<junit printsummary="yes" haltonfailure="no" fork="yes"
+      errorProperty="tests.failed" failureProperty="tests.failed">
+			<sysproperty key="test.data" value="${core.build.test}/data"/>
+			<sysproperty key="test.input" value="${root}/data"/>
+			<sysproperty key="javax.xml.parsers.DocumentBuilderFactory" value="com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"/>
+			<classpath refid="test.classpath"/>
+			<formatter type="plain" />
+			<batchtest todir="${core.build.test}" unless="testcase">
+				<fileset dir="${src.test}"
+                 includes="**/Test*.java" excludes="**/${test.exclude}.java" />
+			</batchtest>
+			<batchtest todir="${core.build.test}" if="testcase">
+				<fileset dir="${src.test}" includes="**/${testcase}.java"/>
+			</batchtest>
+		</junit>
+
+		<fail if="tests.failed">Tests failed!</fail>
+
+	</target>
+
+
+	<!-- ================================================================== -->
+	<!-- Clean.  Delete the build files, and their directories              -->
+	<!-- ================================================================== -->
+	<!-- target: clean  =================================================== -->
+	<target name="clean" depends="clean-build, clean-lib" description="--> clean the project" />
+
+	<!-- target: clean-lib  =============================================== -->
+	<target name="clean-lib" description="--> clean the project libraries directory (dependencies)">
+		<delete includeemptydirs="true" dir="${build.lib.dir}"/>
+	</target>
+
+	<!-- target: clean-build  ============================================= -->
+	<target name="clean-build" description="--> clean the project built files">
+		<delete includeemptydirs="true" dir="${core.build.dir}"/>
+		<delete includeemptydirs="true" dir="${deploy.dir}"/>
+	</target>
+
+</project>

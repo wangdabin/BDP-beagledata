@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.sky.service.vo.ServiceVo" table="service">
+		<composite-id>
+			<key-property name="name" column="name"/>
+			<key-property name="version" column="version"/>
+		</composite-id>
+		
+		<property name="installDir" column="installDir" />
+		<property name="status" column="status" />
+		<property name="desc" column="description" />
+		<set name="hosts" cascade="all" table="SERVICE_STATUS" lazy="false">
+			<key>
+				<column name="service_name"></column>
+				<column name="service_version"></column>
+			</key>
+			<many-to-many class="com.joe.host.vo.Host" column="HOST_ID"></many-to-many>
+		</set>
+		
+		<set name="serviceStatus" cascade="all" lazy="false" inverse="true">
+			<key>
+				<column name="service_name"></column>
+				<column name="service_version"></column>
+			</key>
+			<one-to-many class="com.sky.service.vo.ServiceStatusVo"/>
+		</set>
+		
+		<many-to-one name="parent" cascade="all" update="true"  insert="true" lazy="false">
+			<column name="parent_name"></column>
+			<column name="parent_version"></column>
+ 		</many-to-one>
+ 		
+ 		<set name="children" cascade="all" lazy="false" inverse="false">
+			<key>
+				<column name="parent_name"></column>
+				<column name="parent_version"></column>
+			</key>
+			<one-to-many class="com.sky.service.vo.ServiceVo"/>
+		</set>
+	</class>
+	
+	<class name="com.sky.service.vo.ServiceStatusVo" table="SERVICE_STATUS">
+		<composite-id>
+			<key-property name="serviceName" column="service_name"/>
+			<key-property name="serviceVersion" column="service_version"/>
+			<key-property name="hostId" column="HOST_ID"/>
+		</composite-id>
+		<property name="serviceStatus" column="service_status"></property>
+		<many-to-one name="host" class="com.joe.host.vo.Host" lazy="false" cascade="all">
+			<column name="host_id"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

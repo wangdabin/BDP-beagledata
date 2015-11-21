@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<project name="service" default="jar-core">
+	<import file="../build-src.xml" />
+</project>

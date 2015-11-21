@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="com.joe.monitor.filesystem.DiskInfo" table="diskinfo">
+		<composite-id>
+			<key-property name="devName" column="devname" />
+			<key-property name="dirName" column="dirname" />
+			<key-property name="ip" column="ip" />
+		</composite-id>
+		<property name="timeStamp" column="timestamp" />
+		<property name="total" column="total" />
+	</class>
+	<class name="com.joe.monitor.filesystem.DiskUnit" table="diskunit">
+		<id name="id" column="disk_id" type="long">
+			<generator class="increment" />
+		</id>
+		<property name="free" column="free" />
+		<property name="used" column="used" />
+		<property name="avail" column="avail" />
+		<property name="files" column="files" />
+		<property name="freefiles" column="freefiles" />
+		<property name="diskReadBytes" column="diskReadBytes" />
+		<property name="diskWriteBytes" column="diskWriteBytes" />
+		<property name="usedPercent" column="usedPercent" />
+		<property name="month" column="month" />
+		<property name="day" column="day" />
+		<property name="hour" column="hour" />
+		<property name="minute" column="minute"/>
+		<property name="timestamp" column="timestamp" />
+		<many-to-one name="diskInfo" cascade="all" update="true"
+			insert="true" class="com.joe.monitor.filesystem.DiskInfo" lazy="false">
+			<column name="info_dirname"></column>
+			<column name="info_devname"></column>
+			<column name="info_ip"></column>
+		</many-to-one>
+	</class>
+</hibernate-mapping>

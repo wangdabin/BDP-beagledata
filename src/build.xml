@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project name="bdp-plugins" default="deploy-core" basedir=".">
+
+	<target name="deploy-core">
+		<ant target="compile-core" inheritall="false" dir="../.." />
+		<ant target="deploy" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Build & deploy all the plugin jars.                    -->
+	<!-- ====================================================== -->
+	<target name="deploy">
+		<ant dir="server" target="deploy" />
+		<ant dir="config" target="deploy" />
+		<ant dir="core" target="deploy" />
+		<ant dir="host" target="deploy" />
+		<ant dir="system" target="deploy" />
+		<ant dir="monitor" target="deploy" />
+		<ant dir="user" target="deploy" />
+		<ant dir="download" target="deploy" />
+		<ant dir="service" target="deploy" />
+		<ant dir="agent" target="deploy" />
+		<ant dir="application" target="deploy" />
+		<ant dir="group" target="deploy" />
+		<ant dir="plugin" target="deploy" />
+		<ant dir="tools" target="deploy" />
+		<ant dir="license" target="deploy" />
+		<ant dir="service" target="deploy" />
+		<ant dir="rest" target="deploy" />
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Test all of the plugins.                               -->
+	<!-- ====================================================== -->
+	<target name="test">
+		<parallel threadCount="2">
+			<ant dir="server" target="test" />
+			<ant dir="config" target="test" />
+			<ant dir="core" target="test" />
+			<ant dir="host" target="test" />
+			<ant dir="system" target="test" />
+			<ant dir="monitor" target="test" />
+			<ant dir="user" target="test" />
+			<ant dir="download" target="test" />
+			<ant dir="service" target="test" />
+			<ant dir="agent" target="test" />
+			<ant dir="application" target="test" />
+			<ant dir="group" target="test" />
+			<ant dir="plugin" target="test" />
+			<ant dir="tools" target="test" />
+			<ant dir="license" target="test" />
+			<ant dir="service" target="test" />
+		</parallel>
+	</target>
+
+	<!-- ====================================================== -->
+	<!-- Clean all of the plugins.                              -->
+	<!-- ====================================================== -->
+	<target name="clean">
+		<ant dir="server" target="clean" />
+		<ant dir="config" target="clean" />
+		<ant dir="core" target="clean" />
+		<ant dir="host" target="clean" />
+		<ant dir="system" target="clean" />
+		<ant dir="monitor" target="clean" />
+		<ant dir="user" target="clean" />
+		<ant dir="download" target="clean" />
+		<ant dir="service" target="clean" />
+		<ant dir="agent" target="clean" />
+		<ant dir="application" target="clean" />
+		<ant dir="group" target="clean" />
+		<ant dir="plugin" target="clean" />
+		<ant dir="tools" target="clean" />
+		<ant dir="license" target="clean" />
+		<ant dir="service" target="clean" />
+	</target>
+</project>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.joe.monitor.vo.BDPMessage" table="bdp_message" lazy="false">
+        <id name="id" column="m_id">
+            <generator class="native" />
+        </id>
+        <property name="name" column="m_name" />
+        <property name="type" column="m_type"/>
+        <property name="level" column="m_level" />
+        <property name="description" column="m_description" />
+        <property name="readed" column="m_readed" />
+        <property name="createTime" column="m_create_time" />
+        <property name="readTime" column="m_read_time" />
+    </class>
+    
+</hibernate-mapping>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.joe.user.vo.User" table="user" lazy="false">
+        <id name="id" column="user_id">
+            <generator class="native" />
+        </id>
+        <property name="nickName" column="nickname" />
+        <property name="account" column="account"/>
+        <property name="password" column="password" />
+        <property name="status" column="status" />
+        <property name="lastLoginIp" column="last_login_ip" />
+        <property name="lastLoginTime" column="last_login_time" />
+        <property name="createDate" column="create_date" />
+        <property name="lastUpdateDate" column="last_update_date" />
+        <set name="roles" inverse="true"  table="role_user_relation" lazy="false">
+            <key column="user_id"></key>
+            <many-to-many class="com.joe.user.vo.Role" column="role_id" lazy="false"></many-to-many>
+        </set>
+    </class>
+    
+    <class name="com.joe.user.vo.Role" table="role">
+        <id name="id" column="role_id">
+            <generator class="native" />
+        </id>
+        <property name="name" column="name" />
+        <property name="description" column="description"/>
+        <property name="createDate" column="create_date" />
+        <property name="lastUpdateDate" column="last_update_date" />
+        
+        <set name="users" table="role_user_relation" inverse="false" lazy="false" >
+            <key column="role_id"></key>
+            <many-to-many class="com.joe.user.vo.User" column="user_id" lazy="false"></many-to-many>
+        </set>
+        
+        <set name="rolerelation" inverse="false" cascade="all"  lazy="false">
+			<key column="role_id"  ></key>
+			<one-to-many class="com.joe.user.vo.RoleRelation"/>
+		</set>
+    </class>
+    
+    <class name="com.joe.user.vo.Permission" table="permission">
+        <id name="url" column="url"/>
+        <property name="name" column="name" />
+        <property name="description" column="description"/>
+        <property name="createDate" column="create_date" />
+        <property name="lastUpdateDate" column="last_update_date" />
+
+        <set name="operations" inverse="false"  table="perm_oper_relation" lazy="false">
+            <key column="permission_name"></key>
+            <many-to-many class="com.joe.user.vo.Operation" column="operation_name" lazy="false"></many-to-many>
+        </set>
+    </class>
+    
+    <class name="com.joe.user.vo.Operation" table="operation">
+        <id name="name" column="name" />
+        <property name="description" column="description"/>
+        <property name="createDate" column="creat_edate" />
+        <property name="lastUpdateDate" column="last_update_date" />
+    </class>
+    
+     <class name="com.joe.user.vo.RoleRelation" table="role_oper_perm_relation">
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <many-to-one name="role" column="role_id" lazy="false"/>
+        <many-to-one name="operation" column="operation_name" lazy="false"/>
+        <many-to-one name="permission" column="permission_url"  lazy="false"/>
+    </class>
+</hibernate-mapping>
